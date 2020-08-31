@@ -1,50 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { CreateProductInput } from '../input/create-product.input';
 import { Product } from '../model/product.model';
 
 @Injectable()
 export class ProductService {
-  fakeProductsDbData = [
-    {
-      id: '0-create',
-      name: 'switch',
-      description: 'test',
-    },
-  ];
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<Product>,
+  ) {}
 
-  async findOneById(id: string): Promise<Product> {
-    return this.fakeProductsDbData.find(product => product.id === id);
+  findOneById(id: string) {
+    return this.productModel.findById(id).exec();
   }
 
-  async findAll(params): Promise<Product[]> {
-    let result = this.fakeProductsDbData;
-
-    if (params) {
-      const { name } = params;
-
-      if (name) {
-        result = this.fakeProductsDbData.filter(
-          product => product.name === name,
-        );
-      }
-    }
-
-    return result;
+  findAll(params) {
+    return this.productModel.find().exec();
   }
 
-  async create(data: CreateProductInput): Promise<Product> {
-    const id = this.fakeProductsDbData.length + '-create';
-    const newData = {
-      id,
-      ...data,
-      description: data.description || null,
-    };
+  create(data: CreateProductInput) {
+    const newData = new this.productModel(data);
+    console.log(newData);
 
-    this.fakeProductsDbData.push(newData);
-
-    return {
-      id,
-      ...data,
-    };
+    return newData.save();
   }
 }
