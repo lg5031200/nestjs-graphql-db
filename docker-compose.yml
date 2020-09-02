@@ -1,14 +1,26 @@
-version: '2'
+version: '3.7'
+
 services:
-  database:
+  mongodb:
     image: mongo:4.2
-    container_name: mongodb
+    # restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=sweety912
     ports:
-      - '27017:27017'
+      - 27017:27017
     volumes:
-      - './data/mongo/data:/data/db'
+      - mongodb_data:/data/db
   backend:
-    image: nestjs-gql:latest
-    container_name: nestjs-graphql
+    # image: nestjs-gql:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - '3001:3001'
+    environment:
+      - DB_HOST=mongodb
+volumes:
+  mongodb_data:
