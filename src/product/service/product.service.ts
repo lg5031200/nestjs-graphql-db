@@ -21,7 +21,6 @@ export class ProductService {
 
   create(data: CreateProductInput) {
     const newData = new this.productModel(data);
-    console.log(newData);
 
     return newData.save();
   }

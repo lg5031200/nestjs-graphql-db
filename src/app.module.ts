@@ -7,7 +7,7 @@ import { ProductModule } from './product/product.module';
 @Module({
   imports: [
     ProductModule,
-    MongooseModule.forRoot('mongodb://database:27017'),
+    MongooseModule.forRoot('mongodb://localhost:27017'),
     GraphQLModule.forRoot({
       autoSchemaFile: './schema/schema.gql',
     }),

@@ -15,20 +15,38 @@ export class ProductResolver {
     if (!product) {
       throw new NotFoundException(id);
     }
-    return product;
+    return {
+      id: product._id,
+      name: product.name,
+      description: product.description,
+    };
   }
 
   @Query(() => [Product])
   async products(
     @Args('params', { nullable: true }) params: CreateProductInput,
-  ): Promise<Product[]> {
-    return this.ProductService.findAll(params);
+  ): Promise<[Product]> {
+    const products = await this.ProductService.findAll(params);
+    return products.map(product => {
+      return {
+        id: product._id,
+        name: product.name,
+        description: product.description,
+      };
+    });
   }
 
   @Mutation(() => Product)
   async addProduct(
     @Args('newProductData') newProductData: CreateProductInput,
   ): Promise<Product> {
-    return this.ProductService.create(newProductData);
+    const product = await this.ProductService.create(newProductData);
+    console.log(product);
+
+    return {
+      id: product._id,
+      name: product.name,
+      description: product.description,
+    };
   }
 }
