@@ -41,7 +41,6 @@ export class ProductResolver {
     @Args('newProductData') newProductData: CreateProductInput,
   ): Promise<Product> {
     const product = await this.ProductService.create(newProductData);
-    console.log(product);
 
     return {
       id: product._id,

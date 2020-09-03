@@ -3,7 +3,6 @@ version: '3.7'
 services:
   mongodb:
     image: mongo:4.2
-    # restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=sweety912
@@ -12,15 +11,19 @@ services:
     volumes:
       - mongodb_data:/data/db
   backend:
-    # image: nestjs-gql:latest
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
+    volumes:
+      - .:/usr/src/app/src
+      - /usr/src/app/src/node_modules
     env_file:
       - .env
     ports:
       - '3001:3001'
     environment:
       - DB_HOST=mongodb
+    command: "yarn start:dev"
 volumes:
   mongodb_data:
