@@ -122,8 +122,11 @@ export default {
       query: PRODUCT,
       variables() {
         return {
-          id: "5f4f577ba4fb5200288a4a25",
+          id: this.addedProduct.data.addProduct.id
         };
+      },
+      skip() {
+        return !this.addedProduct;
       },
       result({ data }) {
         console.log(data);
