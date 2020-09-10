@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import { PRODUCT, PRODUCTS } from "../constants/query";
-import { ADD_PRODUCT } from "../constants/mutate";
+import { PRODUCT, PRODUCTS } from "@/constants/query";
+import { ADD_PRODUCT } from "@/constants/mutate";
 
 export default {
   name: "HelloWorld",
@@ -99,8 +99,8 @@ export default {
   },
   data() {
     return {
-      addedProduct: null
-    }
+      addedProduct: null,
+    };
   },
   methods: {
     async addProduct() {
@@ -114,7 +114,6 @@ export default {
           newProductData,
         },
       });
-      
     },
   },
   apollo: {
@@ -122,7 +121,7 @@ export default {
       query: PRODUCT,
       variables() {
         return {
-          id: this.addedProduct.data.addProduct.id
+          id: this.addedProduct.data.addProduct.id,
         };
       },
       skip() {
