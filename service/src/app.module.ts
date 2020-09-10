@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ProductModule,
@@ -34,6 +35,7 @@ import { ProductModule } from './product/product.module';
       },
       inject: [ConfigService],
     }),
+    UserModule,
   ],
 })
 export class AppModule {}

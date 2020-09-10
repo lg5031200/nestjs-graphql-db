@@ -8,6 +8,13 @@ type Product {
   description: String
 }
 
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  email: String!
+}
+
 type Query {
   product(id: String!): Product!
   products(params: CreateProductInput): [Product!]!
@@ -20,4 +27,10 @@ input CreateProductInput {
 
 type Mutation {
   addProduct(newProductData: CreateProductInput!): Product!
+  login(loginData: LoginInput!): User!
+}
+
+input LoginInput {
+  password: String!
+  email: String!
 }
