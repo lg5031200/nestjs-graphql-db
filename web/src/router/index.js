@@ -1,16 +1,22 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import SignUp from "@/components/SignUp";
+import Home from "@/components/Home";
+import Login from "@/components/Login";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
   routes: [
     {
-      name: "SignUp",
-      path: "/signup",
-      component: SignUp,
+      name: "Login",
+      path: "/login",
+      component: Login,
+    },
+    {
+      name: "Home",
+      path: "/home",
+      component: Home,
     },
   ],
 });

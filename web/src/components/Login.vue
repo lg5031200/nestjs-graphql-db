@@ -2,16 +2,16 @@
   <section class="section">
     <div class="columns">
       <div class="column is-4 is-offset-4">
-        <h2 class="title has-text-centered">Signup</h2>
+        <h2 class="title has-text-centered">Login</h2>
 
-        <form method="POST" @submit.prevent="signup">
-          <div class="field">
+        <form method="POST" @submit.prevent="login">
+          <!-- <div class="field">
             <label class="label">Username</label>
 
             <p class="control">
               <input type="text" class="input" v-model="username" />
             </p>
-          </div>
+          </div> -->
 
           <div class="field">
             <label class="label">E-Mail Address</label>
@@ -31,7 +31,7 @@
 
           <p class="control">
             <button class="button is-primary is-fullwidth is-uppercase">
-              註冊
+              登入
             </button>
           </p>
         </form>
@@ -41,10 +41,11 @@
 </template>
 
 <script>
-import { SIGNUP_MUTATION } from "@/constants/mutate";
+import { LOGIN } from "@/constants/mutate";
+import { onLogin } from "../vue-apollo";
 
 export default {
-  name: "SignUp",
+  name: "Login",
   data() {
     return {
       username: "",
@@ -53,19 +54,26 @@ export default {
     };
   },
   methods: {
-    signup() {
-      this.$apollo
+    async login() {
+      const loginData = {
+        email: this.email,
+        password: this.password,
+      };
+      const result = await this.$apollo
         .mutate({
-          mutation: SIGNUP_MUTATION,
+          mutation: LOGIN,
           variables: {
-            username: this.username,
-            email: this.email,
-            password: this.password,
+            loginData,
           },
         })
         .then((response) => {
-          // redirect to login page
-          this.$router.replace("/login");
+          if (response.data.login) {
+            onLogin(
+              this.$apollo.provider.defaultClient,
+              response.data.login.token,
+            );
+            this.$router.push({ path: "home", query: { id: response.data.login.id } });
+          }
         });
     },
   },

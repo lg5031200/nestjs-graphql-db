@@ -32,4 +32,10 @@ export class UserService {
 
     return user;
   }
+
+  async getUserById(id: string) {
+    const user = await this.userModel.findById(id).exec();
+
+    return user;
+  }
 }

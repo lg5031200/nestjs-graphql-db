@@ -23,6 +23,18 @@ export class UserResolver {
     };
   }
 
+  @Query(() => User)
+  async user(@Args('id') id: string) {
+    const user = await this.UserService.getUserById(id);
+
+    return {
+      id: user._id,
+      username: user.username,
+      password: user.password,
+      email: user.email,
+    };
+  }
+
   @Mutation(() => User)
   async login(@Args('loginData') loginData: LoginInput) {
     let user = await this.UserService.getUserByEmail(loginData.email);

@@ -9,3 +9,12 @@ export const ADD_PRODUCT = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  mutation login($loginData: LoginInput!) {
+    login(loginData: $loginData) {
+      id
+      token
+    }
+  }
+`;
