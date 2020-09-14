@@ -20,6 +20,10 @@ export class User extends Document {
   @Field()
   @Prop()
   email: string;
+
+  @Field({ nullable: true })
+  @Prop()
+  token?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

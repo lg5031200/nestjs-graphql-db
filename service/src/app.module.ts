@@ -13,6 +13,7 @@ import { UserModule } from './user/user.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: './schema/schema.gql',
+      context: ({ req }) => ({ headers: req.headers }),
     }),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {

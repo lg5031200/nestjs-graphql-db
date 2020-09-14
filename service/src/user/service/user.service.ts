@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { ConfigService } from '@nestjs/config';
 
 import { SignUpInput } from '../input/signup.input';
 import { User } from '../model/user.model';
@@ -9,26 +10,26 @@ import { LoginInput } from '../input/login.input';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private ConfigService: ConfigService,
+  ) {}
 
-  createToken(user: User) {
-    const result =  jwt.sign(user, 'secret');
-    console.log(result)
-    return result
+  createToken(input: LoginInput) {
+    const secret = this.ConfigService.get('JWT_SECRET');
+
+    return jwt.sign(input, secret);
   }
 
-  createUser(data: SignUpInput) {
-    const newData = new this.userModel(data);
+  createUser(input: SignUpInput) {
+    const newUser = new this.userModel(input);
 
-    return newData.save();
+    return newUser.save();
   }
 
-  async getUserByEmail(data: LoginInput) {
-    console.log(data.email)
-    // return this.userModel.findOne({ email: data.email });
-    const result = await this.userModel.findOne({ email: data.email }).exec();
-    console.log(result)
+  async getUserByEmail(email: string) {
+    const user = await this.userModel.findOne({ email }).exec();
 
-    return result
+    return user;
   }
 }

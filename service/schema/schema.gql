@@ -13,11 +13,13 @@ type User {
   username: String!
   password: String!
   email: String!
+  token: String
 }
 
 type Query {
   product(id: String!): Product!
   products(params: CreateProductInput): [Product!]!
+  me: User!
 }
 
 input CreateProductInput {
