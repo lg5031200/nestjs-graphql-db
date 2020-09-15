@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 
 import { AuthGuard } from '../auth.guard';
 import { User } from '../model/user.model';
+import { MyContext } from '../interface/context';
 import { LoginInput } from '../input/login.input';
 import { UserService } from '../service/user.service';
 
@@ -59,5 +60,10 @@ export class UserResolver {
       email: user.email,
       token,
     };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Context() ctx: MyContext) {
+    return this.UserService.logout(ctx);
   }
 }

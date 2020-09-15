@@ -1,13 +1,13 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
+      <router-link class="navbar-item" to="/">
         <img
           src="https://bulma.io/images/bulma-logo.png"
           width="112"
           height="28"
         />
-      </a>
+      </router-link>
 
       <a
         role="button"
@@ -58,9 +58,9 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <!-- <a class="button is-primary">
-              <strong>Login</strong>
-            </a> -->
+            <a class="button is-primary" v-if="showLoginBtn">
+              <strong @click="toLoginPage">Login</strong>
+            </a>
             <a class="button is-light" v-if="me" @click="logout">
               Logout
             </a>
@@ -73,25 +73,43 @@
 
 <script>
 import { onLogout } from "../vue-apollo";
-import { USER, ME } from "@/constants/query";
+import { ME } from "@/constants/query";
+import { LOGOUT } from "@/constants/mutate";
 
 export default {
   name: "Nav",
   data() {
     return {};
   },
+  computed: {
+    showLoginBtn() {
+      return !this.me && this.$route.name !== "Login";
+    },
+  },
   methods: {
-    logout() {
-      onLogout(this.$apollo.provider.defaultClient);
-      this.me = null;
-      this.$router.push({ path: "login" });
+    toLoginPage() {
+      this.$router.push({ path: "/login" });
+    },
+    async logout() {
+      const result = await this.$apollo
+        .mutate({
+          mutation: LOGOUT
+        })
+        .then((response) => {
+          if (response.data.logout) {
+            // onLogout(this.$apollo.provider.defaultClient);
+            localStorage.removeItem("apollo-token");
+            this.me = null;
+            this.toLoginPage();
+          }
+        });
     },
   },
   apollo: {
     me: {
       query: ME,
       skip() {
-        return !this.$route.query.id;
+        return !localStorage.getItem("apollo-token") && !this.$route.query.id;
       },
     },
   },

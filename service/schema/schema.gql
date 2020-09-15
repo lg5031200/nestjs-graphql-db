@@ -31,6 +31,7 @@ input CreateProductInput {
 type Mutation {
   addProduct(newProductData: CreateProductInput!): Product!
   login(loginData: LoginInput!): User!
+  logout: Boolean!
 }
 
 input LoginInput {

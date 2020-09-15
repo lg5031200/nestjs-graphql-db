@@ -118,6 +118,7 @@ export async function onLogin(apolloClient, token) {
 
 // Manually call this when user log out
 export async function onLogout(apolloClient) {
+  console.log(apolloClient)
   if (typeof localStorage !== "undefined") {
     localStorage.removeItem(AUTH_TOKEN);
   }

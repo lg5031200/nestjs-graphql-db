@@ -24,9 +24,14 @@ export default {
   apollo: {
     me: {
       query: ME,
+      skip() {
+        return !localStorage.getItem("apollo-token") && !this.$route.query.id;
+      },
       result({ data }) {
-        if (!data.me) return;
         this.user = data.me;
+        if (!this.$route.query.id && data.me) {
+          this.$router.push({ path: "home", query: { id: data.me.id } });
+        }
       },
     },
   },

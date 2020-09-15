@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
-import { SignUpInput } from '../input/signup.input';
 import { User } from '../model/user.model';
+import { MyContext } from '../interface/context';
 import { LoginInput } from '../input/login.input';
+import { SignUpInput } from '../input/signup.input';
 
 @Injectable()
 export class UserService {
@@ -37,5 +38,15 @@ export class UserService {
     const user = await this.userModel.findById(id).exec();
 
     return user;
+  }
+
+  async logout(ctx: MyContext) {
+    if (!ctx.req.headers.authorization) {
+      return false;
+    } else {
+      delete ctx.req.headers.authorization;
+    }
+
+    return true;
   }
 }

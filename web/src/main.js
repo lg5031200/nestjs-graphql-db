@@ -2,9 +2,11 @@ import Vue from "vue";
 import { createProvider } from "./vue-apollo";
 
 import App from "./App.vue";
-import router from "./router";
+import { createRouter } from "./router";
 
 Vue.config.productionTip = false;
+
+const router = createRouter();
 
 new Vue({
   apolloProvider: createProvider(),
