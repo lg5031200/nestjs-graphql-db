@@ -50,7 +50,7 @@ describe('App Test', () => {
       .send({
         operationName: null,
         variables: {
-          loginData: { email: 'lg5031200@gmail.com', password: 'sweety912' },
+          loginData: { email: 'belstar@gmail.com', password: 'belstar123' },
         },
         query: LOGIN,
       })
